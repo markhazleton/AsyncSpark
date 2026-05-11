@@ -14,7 +14,7 @@ Modern .NET 10 web application demonstrating async programming patterns with bea
 Explore the interactive API documentation at:
 - **Scalar UI**: `/scalar/v1`
 - **OpenAPI Spec**: `/openapi/v1.json`
-- **Live Demo**: [https://AsyncSpark.azurewebsites.net/scalar/v1](https://AsyncSpark.azurewebsites.net/scalar/v1)
+- **Live Demo**: [https://web.makeboldspark.com/asyncspark/scalar/v1](https://web.makeboldspark.com/asyncspark/scalar/v1)
 
 ### Why Scalar?
 - [?] Modern, beautiful interface
@@ -53,7 +53,7 @@ Explore the interactive API documentation at:
 
 ## Live Demo
 
-Visit the live application: [https://AsyncSpark.azurewebsites.net/](https://AsyncSpark.azurewebsites.net/)
+Visit the live application: [https://web.makeboldspark.com/asyncspark](https://web.makeboldspark.com/asyncspark)
 
 ---
 

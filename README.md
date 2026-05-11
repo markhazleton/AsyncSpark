@@ -8,7 +8,12 @@ Production-ready reference implementation for async/await patterns in .NET 10 wi
 
 AsyncSpark demonstrates enterprise-grade async programming patterns with enforced quality standards, automated compliance auditing, and interactive API documentation. Built on .NET 10 with 80% code coverage enforcement in CI/CD.
 
-**Live Demo**: [asyncspark.azurewebsites.net](https://asyncspark.azurewebsites.net/) | **API Docs**: [/scalar/v1](https://asyncspark.azurewebsites.net/scalar/v1)
+**Live Site**: [https://web.makeboldspark.com/asyncspark](https://web.makeboldspark.com/asyncspark) | **API Docs**: [/scalar/v1](https://web.makeboldspark.com/asyncspark/scalar/v1)
+
+## About
+
+> Built by [Mark Hazleton](https://markhazleton.com) — Mark Hazleton, Solutions Architect  
+> AsyncSpark is part of the [Make Bold Spark](https://makeboldspark.com) portfolio of technical demonstrations.
 
 ## Key Features
 
@@ -108,7 +113,7 @@ Interactive API documentation using Scalar v2.12.36 with OpenAPI 3.1 specificati
 **Endpoints**:
 - Interactive Docs: `/scalar/v1`
 - OpenAPI Spec: `/openapi/v1.json`
-- Live Demo: [asyncspark.azurewebsites.net/scalar/v1](https://asyncspark.azurewebsites.net/scalar/v1)
+- Live Demo: [web.makeboldspark.com/asyncspark/scalar/v1](https://web.makeboldspark.com/asyncspark/scalar/v1)
 
 **Features**: Dark/light mode, auto-generated code examples (C#, JavaScript, Python, cURL, HTTP), tag-based organization, live request testing, mobile-friendly
 

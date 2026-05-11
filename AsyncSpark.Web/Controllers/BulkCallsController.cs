@@ -22,7 +22,7 @@ public class BulkCallsController(ILogger<BulkCallsController> logger, IHttpGetCa
     /// <param name="iterationCount">The number of iterations.</param>
     /// <param name="endpoint">The endpoint URL.</param>
     /// <returns>A list of HTTP GET call results.</returns>
-    private async Task<List<HttpGetCallResults>> CallEndpointMultipleTimes(int maxThreads = 1, int iterationCount = 10, string endpoint = "https://AsyncSpark.markhazleton.com/status")
+    private async Task<List<HttpGetCallResults>> CallEndpointMultipleTimes(int maxThreads = 1, int iterationCount = 10, string endpoint = "https://web.makeboldspark.com/asyncspark/status")
     {
         int curIndex = 0;
         // Create a SemaphoreSlim with a maximum of maxThreads concurrent requests
@@ -86,7 +86,7 @@ public class BulkCallsController(ILogger<BulkCallsController> logger, IHttpGetCa
     {
         ViewBag.MaxThreads = 5;
         ViewBag.IterationCount = 10;
-        ViewBag.Endpoint = "https://AsyncSpark.markhazleton.com/status";
+        ViewBag.Endpoint = "https://web.makeboldspark.com/asyncspark/status";
         return View();
     }
 
@@ -106,7 +106,7 @@ public class BulkCallsController(ILogger<BulkCallsController> logger, IHttpGetCa
         {
             if (string.IsNullOrEmpty(endpoint))
             {
-                endpoint = "https://AsyncSpark.markhazleton.com/status";
+                endpoint = "https://web.makeboldspark.com/asyncspark/status";
             }
 
             var results = await CallEndpointMultipleTimes(maxThreads, iterationCount, endpoint);
