@@ -40,9 +40,9 @@ module.exports = {
     }),
     // Add these plugins to expose jQuery globally
     new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery'
+      $: ['jquery', 'default'],
+      jQuery: ['jquery', 'default'],
+      'window.jQuery': ['jquery', 'default']
     })
   ],
   optimization: {

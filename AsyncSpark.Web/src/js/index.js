@@ -1,7 +1,7 @@
 // All requires run in source order — no ES static imports (which are hoisted by webpack)
 // This guarantees window.$ = jQuery before any plugin executes
 
-const jQuery = require('jquery');
+const jQuery = require('jquery').default;
 window.$ = window.jQuery = jQuery;
 
 // jQuery 4 removed $.parseJSON — shim for jquery-validation-unobtrusive compatibility
