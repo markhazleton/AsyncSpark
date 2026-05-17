@@ -1027,10 +1027,7 @@
             </summary>
         </member>
         <member name="M:AsyncSpark.Web.Services.IConfigurationValidationService.ValidateConfiguration">
-            <summary>
-            Validates the application configuration
-            </summary>
-            <returns>Validation result</returns>
+            <summary>Validates the application configuration and returns a result with warnings and errors.</summary>
         </member>
         <member name="T:AsyncSpark.Web.Services.ConfigurationValidationResult">
             <summary>
@@ -1038,95 +1035,92 @@
             </summary>
         </member>
         <member name="P:AsyncSpark.Web.Services.ConfigurationValidationResult.IsValid">
-            <summary>
-            Gets or sets a value indicating whether the configuration is valid
-            </summary>
+            <summary>Gets or sets a value indicating whether the configuration is valid (no errors).</summary>
         </member>
         <member name="P:AsyncSpark.Web.Services.ConfigurationValidationResult.Errors">
-            <summary>
-            Gets or sets the list of configuration errors
-            </summary>
+            <summary>Gets or sets the list of non-fatal configuration errors.</summary>
         </member>
         <member name="P:AsyncSpark.Web.Services.ConfigurationValidationResult.Warnings">
-            <summary>
-            Gets or sets the list of configuration warnings
-            </summary>
+            <summary>Gets or sets the list of configuration warnings for optional settings.</summary>
         </member>
         <member name="T:AsyncSpark.Web.Services.ConfigurationValidationService">
             <summary>
-            Implementation of configuration validation service
+            Validates application configuration.
+            All optional settings produce warnings; nothing here is treated as a fatal error
+            so the site always starts regardless of missing or misconfigured values.
             </summary>
         </member>
         <member name="M:AsyncSpark.Web.Services.ConfigurationValidationService.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{AsyncSpark.Web.Services.ConfigurationValidationService})">
             <summary>
-            Initializes a new instance of the <see cref="T:AsyncSpark.Web.Services.ConfigurationValidationService"/> class
+            Initializes a new instance of the <see cref="T:AsyncSpark.Web.Services.ConfigurationValidationService"/> class.
             </summary>
-            <param name="configuration">The application configuration</param>
-            <param name="logger">The logger instance</param>
+            <param name="configuration">The application configuration.</param>
+            <param name="logger">The logger instance.</param>
         </member>
         <member name="M:AsyncSpark.Web.Services.ConfigurationValidationService.ValidateConfiguration">
             <summary>
-            Validates the application configuration and returns validation results
+            Validates the application configuration. Warnings indicate missing optional config;
+            errors indicate unexpected problems. Neither prevents the site from starting.
             </summary>
-            <returns>A <see cref="T:AsyncSpark.Web.Services.ConfigurationValidationResult"/> containing validation results</returns>
+            <returns>A <see cref="T:AsyncSpark.Web.Services.ConfigurationValidationResult"/> with warnings and errors.</returns>
         </member>
         <member name="T:AsyncSpark.Web.Services.IStartupService">
             <summary>
-            Service that runs during application startup to perform initialization tasks
+            Service that runs during application startup to perform initialization tasks.
             </summary>
         </member>
         <member name="M:AsyncSpark.Web.Services.IStartupService.ExecuteAsync(System.Threading.CancellationToken)">
             <summary>
-            Executes startup tasks
+            Executes startup tasks. Implementations must not throw — failures are logged and the site starts in degraded mode.
             </summary>
-            <param name="cancellationToken">Cancellation token</param>
-            <returns>Task representing the startup operation</returns>
+            <param name="cancellationToken">Cancellation token.</param>
         </member>
         <member name="T:AsyncSpark.Web.Services.StartupService">
             <summary>
-            Implementation of startup service
+            Implementation of startup service — all failures are logged and degraded, never fatal.
+            The site must always start regardless of configuration or cache issues.
             </summary>
         </member>
         <member name="M:AsyncSpark.Web.Services.StartupService.#ctor(AsyncSpark.Web.Services.IConfigurationValidationService,Microsoft.Extensions.Logging.ILogger{AsyncSpark.Web.Services.StartupService},Microsoft.Extensions.Caching.Memory.IMemoryCache)">
             <summary>
-            Initializes a new instance of the <see cref="T:AsyncSpark.Web.Services.StartupService"/> class
+            Initializes a new instance of the <see cref="T:AsyncSpark.Web.Services.StartupService"/> class.
             </summary>
-            <param name="configValidationService">The configuration validation service</param>
-            <param name="logger">The logger instance</param>
-            <param name="memoryCache">The memory cache instance</param>
+            <param name="configValidationService">The configuration validation service.</param>
+            <param name="logger">The logger instance.</param>
+            <param name="memoryCache">The memory cache instance.</param>
         </member>
         <member name="M:AsyncSpark.Web.Services.StartupService.ExecuteAsync(System.Threading.CancellationToken)">
             <summary>
-            Executes startup tasks including configuration validation and cache pre-warming
+            Executes startup tasks: validates configuration and pre-warms the cache.
+            Neither step is fatal — the site starts in degraded mode if either fails.
             </summary>
-            <param name="cancellationToken">Cancellation token for the async operation</param>
-            <returns>A task representing the asynchronous startup operation</returns>
+            <param name="cancellationToken">Cancellation token.</param>
         </member>
         <member name="T:AsyncSpark.Web.Services.StartupHostedService">
             <summary>
-            Hosted service that runs the startup service
+            Hosted service that runs the startup service.
+            Startup failures are logged but never allowed to prevent the host from starting.
             </summary>
         </member>
         <member name="M:AsyncSpark.Web.Services.StartupHostedService.#ctor(System.IServiceProvider,Microsoft.Extensions.Logging.ILogger{AsyncSpark.Web.Services.StartupHostedService})">
             <summary>
-            Initializes a new instance of the <see cref="T:AsyncSpark.Web.Services.StartupHostedService"/> class
+            Initializes a new instance of the <see cref="T:AsyncSpark.Web.Services.StartupHostedService"/> class.
             </summary>
-            <param name="serviceProvider">The service provider for resolving dependencies</param>
-            <param name="logger">The logger instance</param>
+            <param name="serviceProvider">The service provider for resolving dependencies.</param>
+            <param name="logger">The logger instance.</param>
         </member>
         <member name="M:AsyncSpark.Web.Services.StartupHostedService.StartAsync(System.Threading.CancellationToken)">
             <summary>
-            Triggered when the application host is ready to start the service
+            Triggered when the application host is ready to start the service.
+            Exceptions are caught and logged — the host is never crashed by a startup service failure.
             </summary>
-            <param name="cancellationToken">Cancellation token for the async operation</param>
-            <returns>A task representing the asynchronous start operation</returns>
+            <param name="cancellationToken">Cancellation token.</param>
         </member>
         <member name="M:AsyncSpark.Web.Services.StartupHostedService.StopAsync(System.Threading.CancellationToken)">
             <summary>
-            Triggered when the application host is performing a graceful shutdown
+            Triggered when the application host is performing a graceful shutdown.
             </summary>
-            <param name="cancellationToken">Cancellation token for the async operation</param>
-            <returns>A task representing the asynchronous stop operation</returns>
+            <param name="cancellationToken">Cancellation token.</param>
         </member>
         <member name="T:Program">
             <summary>

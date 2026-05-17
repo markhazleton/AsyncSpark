@@ -12,6 +12,6 @@
     <AssemblyVersion>10.$([System.DateTime]::UtcNow.ToString(yyMM)).$([System.DateTime]::UtcNow.ToString(ddHH)).$([System.DateTime]::UtcNow.ToString(mmss))</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="WebSpark.HttpClientUtility" Version="2.2.0" />
+    <PackageReference Include="WebSpark.HttpClientUtility" Version="2.5.0" />
   </ItemGroup>
 </Project>
