@@ -870,33 +870,6 @@
             Revision
             </summary>
         </member>
-        <member name="T:AsyncSpark.Web.Models.ErrorResource">
-            <summary>
-            Error Resource
-            </summary>
-        </member>
-        <member name="M:AsyncSpark.Web.Models.ErrorResource.#ctor(System.Collections.Generic.List{System.String})">
-             <summary>
-            
-             </summary>
-             <param name="messages"></param>
-        </member>
-        <member name="M:AsyncSpark.Web.Models.ErrorResource.#ctor(System.String)">
-            <summary>
-            Error Resource
-            </summary>
-            <param name="message"></param>
-        </member>
-        <member name="P:AsyncSpark.Web.Models.ErrorResource.Messages">
-            <summary>
-            Messages
-            </summary>
-        </member>
-        <member name="P:AsyncSpark.Web.Models.ErrorResource.Success">
-            <summary>
-            Success
-            </summary>
-        </member>
         <member name="T:AsyncSpark.Web.Models.ErrorViewModel">
             <summary>
             
@@ -910,60 +883,6 @@
         <member name="P:AsyncSpark.Web.Models.ErrorViewModel.ShowRequestId">
             <summary>
             
-            </summary>
-        </member>
-        <member name="T:AsyncSpark.Web.Models.KeyVaultOptions">
-            <summary>
-            Represents the options for accessing Azure Key Vault.
-            </summary>
-        </member>
-        <member name="P:AsyncSpark.Web.Models.KeyVaultOptions.Mode">
-            <summary>
-            Gets or sets the mode of accessing Azure Key Vault.
-            </summary>
-        </member>
-        <member name="P:AsyncSpark.Web.Models.KeyVaultOptions.KeyVaultUri">
-            <summary>
-            Gets or sets the URI of the Azure Key Vault.
-            </summary>
-        </member>
-        <member name="P:AsyncSpark.Web.Models.KeyVaultOptions.ClientId">
-            <summary>
-            Gets or sets the client ID for authenticating with Azure Key Vault.
-            </summary>
-        </member>
-        <member name="P:AsyncSpark.Web.Models.KeyVaultOptions.ClientSecret">
-            <summary>
-            Gets or sets the client secret for authenticating with Azure Key Vault.
-            </summary>
-        </member>
-        <member name="M:AsyncSpark.Web.Models.KeyVaultOptions.#ctor(AsyncSpark.Web.Models.KeyVaultUsage,System.String,System.String,System.String)">
-            <summary>
-            Initialize KeyVaultOptions.
-            </summary>
-            <param name="mode"></param>
-            <param name="keyVaultUri"></param>
-            <param name="clientId"></param>
-            <param name="clientSecret"></param>
-        </member>
-        <member name="T:AsyncSpark.Web.Models.KeyVaultUsage">
-            <summary>
-            Key Vault Usage
-            </summary>
-        </member>
-        <member name="F:AsyncSpark.Web.Models.KeyVaultUsage.UseLocalSecretStore">
-            <summary>
-            Use local secret store
-            </summary>
-        </member>
-        <member name="F:AsyncSpark.Web.Models.KeyVaultUsage.UseClientSecret">
-            <summary>
-            Use client secret
-            </summary>
-        </member>
-        <member name="F:AsyncSpark.Web.Models.KeyVaultUsage.UseMsi">
-            <summary>
-            Use Managed Service Identity (MSI)
             </summary>
         </member>
         <member name="T:AsyncSpark.Web.Models.ServiceStatus">

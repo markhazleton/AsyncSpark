@@ -3,7 +3,6 @@
     "AsyncSpark.Web": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "scalar/v1",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "VaultUri": "https://hellioworldkeyvault.vault.azure.net/",

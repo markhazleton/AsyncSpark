@@ -5,7 +5,13 @@
       "Bash(npm run build:*)",
       "Bash(dotnet test:*)",
       "Bash(dotnet tool list:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(Get-ChildItem -Recurse \"c:\\\\GitHub\\\\MarkHazleton\\\\AsyncSpark\\\\AsyncSpark.Web\\\\Views\" -File)",
+      "PowerShell(Get-ChildItem \"c:\\\\GitHub\\\\MarkHazleton\\\\AsyncSpark\\\\AsyncSpark.Web\" -Recurse | Where-Object { $_.Extension -eq \".cshtml\" } | ForEach-Object { $_.FullName })",
+      "PowerShell(cd \"c:\\\\GitHub\\\\MarkHazleton\\\\AsyncSpark\\\\AsyncSpark.Web\" && npm show jquery versions --json 2>$null | ConvertFrom-Json | Where-Object { $_ -match \"^3\\\\.\" } | Select-Object -Last 5)",
+      "Bash(Get-ChildItem -Path \"c:\\\\GitHub\\\\MarkHazleton\\\\AsyncSpark\" -Recurse -Directory)",
+      "Bash(Select-Object -First 20)",
+      "PowerShell(npm show jquery-validation-unobtrusive versions --json 2>$null)"
     ],
     "deny": [],
     "ask": []
