@@ -87,22 +87,23 @@ namespace AsyncSpark.Web.Controllers
                     var json = JsonSerializer.Serialize(mockResults);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                    _logger.LogDebug("POLLY POST → {Url}  Content-Type: {CT}  Body: {Body}",
+                    _logger.LogWarning("[POLLY-DIAG] → POST {Url} | Content-Type: {CT} | Body: {Body}",
                         requestUrl, content.Headers.ContentType, json);
 
                     var httpResponse = await _httpClient.PostAsync(requestUrl, content, Cts.Token);
 
                     var responseBody = await httpResponse.Content.ReadAsStringAsync();
-                    _logger.LogDebug("POLLY ← {Status}  Response-Content-Type: {CT}  Body: {Body}",
-                        (int)httpResponse.StatusCode, httpResponse.Content.Headers.ContentType, responseBody);
+                    _logger.LogWarning("[POLLY-DIAG] ← {Status} {Reason} | Response-CT: {CT} | Body: {Body}",
+                        (int)httpResponse.StatusCode, httpResponse.ReasonPhrase,
+                        httpResponse.Content.Headers.ContentType, responseBody);
 
-                    if (!httpResponse.IsSuccessStatusCode)
+                    // Surface response details in the view regardless of success/failure
+                    if (context.TryGetValue("ResultsList", out var rl) && rl is List<string> diagList)
                     {
-                        _logger.LogWarning("POLLY ← {Status} {Reason} | URL: {Url} | ResponseBody: {Body}",
-                            (int)httpResponse.StatusCode, httpResponse.ReasonPhrase, requestUrl, responseBody);
+                        diagList.Add($"<strong>{(int)httpResponse.StatusCode} {httpResponse.ReasonPhrase}</strong> | CT: {httpResponse.Content.Headers.ContentType} | Body: <code>{System.Web.HttpUtility.HtmlEncode(responseBody[..Math.Min(responseBody.Length, 300)])}</code>");
                     }
 
-                    // Re-wrap the body so downstream ReadFromJsonAsync still works
+                    // Re-wrap so downstream ReadFromJsonAsync still works
                     httpResponse.Content = new StringContent(responseBody,
                         Encoding.UTF8,
                         httpResponse.Content.Headers.ContentType?.MediaType ?? "application/json");

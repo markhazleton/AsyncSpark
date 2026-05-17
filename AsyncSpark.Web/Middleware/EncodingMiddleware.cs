@@ -26,8 +26,12 @@ public class EncodingMiddleware
     /// <returns>A task representing the asynchronous operation</returns>
     public async Task InvokeAsync(HttpContext context)
     {
-        // Set request encoding
-        context.Request.ContentType = context.Request.ContentType?.Replace("charset=", "charset=utf-8") ?? "text/html; charset=utf-8";
+        // Skip API routes entirely — they manage their own Content-Type
+        if (context.Request.Path.StartsWithSegments("/api"))
+        {
+            await _next(context);
+            return;
+        }
 
         // Store original response stream
         var originalBodyStream = context.Response.Body;
@@ -39,14 +43,12 @@ public class EncodingMiddleware
 
             await _next(context);
 
-            // Ensure response has UTF-8 charset
-            if (context.Response.ContentType != null && !context.Response.ContentType.Contains("charset="))
+            // Only add UTF-8 charset to HTML responses that are missing it
+            if (context.Response.ContentType != null
+                && context.Response.ContentType.Contains("text/html")
+                && !context.Response.ContentType.Contains("charset="))
             {
                 context.Response.ContentType += "; charset=utf-8";
-            }
-            else if (context.Response.ContentType == null)
-            {
-                context.Response.ContentType = "text/html; charset=utf-8";
             }
 
             // Copy response back to original stream
