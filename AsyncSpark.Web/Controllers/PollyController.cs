@@ -12,16 +12,19 @@ namespace AsyncSpark.Web.Controllers
         private static readonly Stopwatch StopWatch = new();
         private static readonly Random Jitter = new();
         private readonly CancellationTokenSource Cts;
+        private readonly string _remoteApiBaseUrl;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PollyController"/> class.
         /// </summary>
         /// <param name="logger">The logger instance for logging information.</param>
         /// <param name="clientFactory">The HTTP client factory for creating HTTP clients.</param>
-        public PollyController(ILogger<PollyController> logger, IHttpClientFactory clientFactory)
+        /// <param name="configuration">The application configuration.</param>
+        public PollyController(ILogger<PollyController> logger, IHttpClientFactory clientFactory, IConfiguration configuration)
         {
             _logger = logger;
             Cts = new CancellationTokenSource();
+            _remoteApiBaseUrl = configuration["PollyDemo:RemoteApiBaseUrl"] ?? string.Empty;
 
             // Initialize HttpClient and set default request headers
             _httpClient = clientFactory.CreateClient();
@@ -76,7 +79,12 @@ namespace AsyncSpark.Web.Controllers
             var mockResults = new MockResults { LoopCount = loopCount, MaxTimeMS = maxTimeMs };
             HttpResponseMessage response = new(HttpStatusCode.InternalServerError);
 
-            var requestUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/api/remote/Results";
+            // Use a configured loopback base URL to avoid routing through external proxies (e.g. Cloudflare).
+            // In production this is "http://localhost"; in Development it falls back to the request's own host.
+            var baseUrl = string.IsNullOrEmpty(_remoteApiBaseUrl)
+                ? $"{Request.Scheme}://{Request.Host}{Request.PathBase}"
+                : _remoteApiBaseUrl;
+            var requestUrl = $"{baseUrl}/api/remote/Results";
             var apiCallLog = new List<string>();
             apiCallLog.Add($"<strong>POST</strong> <code>{requestUrl}</code>");
 

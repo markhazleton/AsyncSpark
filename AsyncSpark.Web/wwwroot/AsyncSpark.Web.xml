@@ -612,12 +612,13 @@
             Controller for demonstrating the use of Polly for handling retries in HTTP requests.
             </summary>
         </member>
-        <member name="M:AsyncSpark.Web.Controllers.PollyController.#ctor(Microsoft.Extensions.Logging.ILogger{AsyncSpark.Web.Controllers.PollyController},System.Net.Http.IHttpClientFactory)">
+        <member name="M:AsyncSpark.Web.Controllers.PollyController.#ctor(Microsoft.Extensions.Logging.ILogger{AsyncSpark.Web.Controllers.PollyController},System.Net.Http.IHttpClientFactory,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             Initializes a new instance of the <see cref="T:AsyncSpark.Web.Controllers.PollyController"/> class.
             </summary>
             <param name="logger">The logger instance for logging information.</param>
             <param name="clientFactory">The HTTP client factory for creating HTTP clients.</param>
+            <param name="configuration">The application configuration.</param>
         </member>
         <member name="M:AsyncSpark.Web.Controllers.PollyController.Index(System.Int32,System.Int32)">
             <summary>
