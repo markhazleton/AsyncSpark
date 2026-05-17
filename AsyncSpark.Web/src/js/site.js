@@ -1,3 +1,1 @@
-$(function () {
-    $('.table').DataTable();
-});
+// Site-wide vanilla JS functionality

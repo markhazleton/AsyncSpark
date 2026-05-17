@@ -1,7 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const webpack = require('webpack');
 
 module.exports = {
   mode: 'production',
@@ -37,12 +36,6 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'css/[name].min.css'
-    }),
-    // Add these plugins to expose jQuery globally
-    new webpack.ProvidePlugin({
-      $: ['jquery', 'default'],
-      jQuery: ['jquery', 'default'],
-      'window.jQuery': ['jquery', 'default']
     })
   ],
   optimization: {

@@ -1,35 +1,29 @@
-// All requires run in source order — no ES static imports (which are hoisted by webpack)
-// This guarantees window.$ = jQuery before any plugin executes
+const { Notyf } = require('notyf');
+require('notyf/notyf.min.css');
 
-const jQuery = require('jquery').default;
-window.$ = window.jQuery = jQuery;
+// Create a global notyf instance with default options
+window.notyf = new Notyf({
+    duration: 5000,
+    position: { x: 'right', y: 'bottom' },
+    dismissible: true,
+    types: [
+        { type: 'info', background: '#0dcaf0', icon: false }
+    ]
+});
 
-// jQuery 4 removed $.parseJSON — shim for jquery-validation-unobtrusive compatibility
-jQuery.parseJSON = JSON.parse;
-
-require('jquery-validation');
-require('jquery-validation-unobtrusive');
-require('datatables.net');
-require('datatables.net-bs5');
-const toastr = require('toastr');
-require('toastr/build/toastr.min.css');
-
-window.toastr = toastr;
-
-toastr.options = {
-    closeButton: true,
-    progressBar: true,
-    positionClass: 'toast-bottom-right',
-    timeOut: 5000
+// Thin toastr-compatible shim so existing call sites need no changes
+window.toastr = {
+    success: (msg) => window.notyf.success(msg),
+    error: (msg) => window.notyf.error(msg),
+    info: (msg) => window.notyf.open({ type: 'info', message: msg }),
+    options: {}
 };
 
 require('./site');
 require('./async-stats');
 const AsyncStatsDashboard = require('./async-stats-dashboard').default;
 
-jQuery(function () {
-    jQuery('.table').DataTable();
-
+document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('async-stats-container')) {
         new AsyncStatsDashboard('async-stats-container');
     }

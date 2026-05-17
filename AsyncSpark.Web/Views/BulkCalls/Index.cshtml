@@ -184,7 +184,7 @@
 
 @section Scripts {
     <script>
-        $(function () {
+        document.addEventListener('DOMContentLoaded', function () {
             // Show a notification that the page is ready
             if (window.asyncStats) {
                 const readyOpId = window.asyncStats.startOperation('Page Load');
@@ -192,7 +192,7 @@
             }
 
             // Add click handler for the Run New Test button
-            $('#runNewTestBtn').on('click', function (e) {
+            document.getElementById('runNewTestBtn').addEventListener('click', function (e) {
                 if (window.asyncStats) {
                     const opId = window.asyncStats.startOperation('Bulk API Test');
 

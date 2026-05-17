@@ -87,7 +87,7 @@
 
 @section Scripts {
     <script>
-        $(function () {
+        document.addEventListener('DOMContentLoaded', function () {
             // Show a notification that the page is ready
             if (window.asyncStats) {
                 const readyOpId = window.asyncStats.startOperation('Page Load');
@@ -95,10 +95,10 @@
             }
 
             // Add submit handler for the form
-            $('#bulkCallForm').on('submit', function (e) {
+            document.getElementById('bulkCallForm').addEventListener('submit', function (e) {
                 if (window.asyncStats) {
-                    const maxThreads = $('#maxThreads').val();
-                    const iterationCount = $('#iterationCount').val();
+                    const maxThreads = document.getElementById('maxThreads').value;
+                    const iterationCount = document.getElementById('iterationCount').value;
 
                     const opId = window.asyncStats.startOperation('Bulk API Test');
 
