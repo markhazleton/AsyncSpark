@@ -73,6 +73,9 @@ public class RemoteController(ILogger<RemoteController> _logger, IMemoryCache me
     [Route("Results")]
     public async Task<IActionResult> GetResults([FromBody] MockResults model)
     {
+        _logger.LogDebug("REMOTE ← {Method} {Path}  Content-Type: {CT}  LoopCount: {LC}  MaxTimeMS: {MT}",
+            Request.Method, Request.Path, Request.ContentType, model.LoopCount, model.MaxTimeMS);
+
         var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(model.MaxTimeMS));
         var watch = Stopwatch.StartNew();
         MockResults? result;

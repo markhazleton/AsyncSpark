@@ -72,12 +72,12 @@ namespace AsyncSpark.Web.Controllers
             StopWatch.Reset();
             StopWatch.Start();
 
-            // Set the base address for the HttpClient
-            _httpClient.BaseAddress = new Uri($"{Request.Scheme}://{Request.Host}{Request.PathBase}/api/");
-
             var context = new Context { { RetryCountKey, 0 }, { "ResultsList", new List<string>() } };
             var mockResults = new MockResults { LoopCount = loopCount, MaxTimeMS = maxTimeMs };
             HttpResponseMessage response = new(HttpStatusCode.InternalServerError);
+
+            var requestUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/api/remote/Results";
+            mockResults.Message = $"<small class='text-muted'>POST {requestUrl}</small>";
 
             try
             {
@@ -86,13 +86,28 @@ namespace AsyncSpark.Web.Controllers
                 {
                     var json = JsonSerializer.Serialize(mockResults);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    
-                    // Log the request details for debugging
-                    _logger.LogInformation("POST Request to: {Url}", _httpClient.BaseAddress + "remote/Results");
-                    _logger.LogInformation("Content-Type: {ContentType}", content.Headers.ContentType);
-                    _logger.LogInformation("Request Body: {Body}", json);
-                    
-                    return await _httpClient.PostAsync("remote/Results", content, Cts.Token);
+
+                    _logger.LogDebug("POLLY POST → {Url}  Content-Type: {CT}  Body: {Body}",
+                        requestUrl, content.Headers.ContentType, json);
+
+                    var httpResponse = await _httpClient.PostAsync(requestUrl, content, Cts.Token);
+
+                    var responseBody = await httpResponse.Content.ReadAsStringAsync();
+                    _logger.LogDebug("POLLY ← {Status}  Response-Content-Type: {CT}  Body: {Body}",
+                        (int)httpResponse.StatusCode, httpResponse.Content.Headers.ContentType, responseBody);
+
+                    if (!httpResponse.IsSuccessStatusCode)
+                    {
+                        _logger.LogWarning("POLLY ← {Status} {Reason} | URL: {Url} | ResponseBody: {Body}",
+                            (int)httpResponse.StatusCode, httpResponse.ReasonPhrase, requestUrl, responseBody);
+                    }
+
+                    // Re-wrap the body so downstream ReadFromJsonAsync still works
+                    httpResponse.Content = new StringContent(responseBody,
+                        Encoding.UTF8,
+                        httpResponse.Content.Headers.ContentType?.MediaType ?? "application/json");
+
+                    return httpResponse;
                 }, context);
 
                 if (response.IsSuccessStatusCode)
