@@ -125,7 +125,7 @@ public class MemoryCacheManager : IMemoryCacheManager
         {
             _cache.Remove(key);
         }
-        _allKeys.Clear(); _allKeys.Clear();
+        _allKeys.Clear();
 
         //send cancellation request
         _cancellationTokenSource.Cancel();

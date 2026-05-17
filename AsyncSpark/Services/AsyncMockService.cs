@@ -139,10 +139,6 @@ public class AsyncMockService
                     logger.TrackException(ex, $"{name} Exception. {i} of {iterations} completed. Time:{sw.ElapsedMilliseconds} Exception:{ex.Message}");
                     throw;
                 }
-                finally
-                {
-
-                }
                 // Check for cancellation after the delay
                 if (ct.IsCancellationRequested)
                 {
