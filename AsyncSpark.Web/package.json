@@ -20,6 +20,11 @@
     "jquery-validation-unobtrusive": "^4.0.0",
     "toastr": "^2.1.4"
   },
+  "overrides": {
+    "jquery-validation-unobtrusive": {
+      "jquery": "^4.0.0"
+    }
+  },
   "devDependencies": {
     "css-loader": "^7.1.4",
     "mini-css-extract-plugin": "^2.10.2",

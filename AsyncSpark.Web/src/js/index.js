@@ -2,12 +2,17 @@
 import jQuery from 'jquery';
 window.$ = window.jQuery = jQuery;
 
-import 'jquery-validation';
-import 'jquery-validation-unobtrusive';
-import 'datatables.net';
-import 'datatables.net-bs5';
-import toastr from 'toastr';
-import 'toastr/build/toastr.min.css';
+// jQuery 4 removed $.parseJSON — shim for jquery-validation-unobtrusive compatibility
+jQuery.parseJSON = JSON.parse;
+
+// Use require() so these load after jQuery is assigned to window.$
+// (ES import statements are hoisted and would run before the assignment above)
+require('jquery-validation');
+require('jquery-validation-unobtrusive');
+require('datatables.net');
+require('datatables.net-bs5');
+const toastr = require('toastr');
+require('toastr/build/toastr.min.css');
 
 // Make toastr globally available
 window.toastr = toastr;
@@ -30,7 +35,7 @@ import './async-stats';                              // Async statistics trackin
 import AsyncStatsDashboard from './async-stats-dashboard'; // Dashboard visualization
 
 // Initialize components on document ready
-jQuery(document).ready(function () {
+jQuery(function () {
     // Initialize DataTables
     jQuery('.table').DataTable();
     
