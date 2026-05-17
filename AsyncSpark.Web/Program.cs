@@ -142,7 +142,11 @@ app.UseAuthorization();
 app.UseMarkdown();
 app.UseSession();
 
-// Add MVC routing first to ensure the default route takes precedence
+// Explicit root redirect so / always goes to the Home page
+app.MapGet("/", () => Results.Redirect("/Home/Index", permanent: false))
+   .ExcludeFromDescription();
+
+// Add MVC routing for convention-based routes (Home, Polly, BulkCalls, OpenWeather)
 app.UseMvc(routes =>
 {
     routes.MapRoute(
@@ -150,26 +154,31 @@ app.UseMvc(routes =>
         template: "{controller=Home}/{action=Index}/{id?}");
 });
 
-// Add Scalar API documentation after MVC routing so it doesn't take over the root path
+// Add Scalar API documentation and attribute-routed API controllers after MVC
 app.UseCustomScalar();
-
 app.MapControllers();
 app.MapHealthChecks("/health");
 
-// Add graceful shutdown logging
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
-logger.LogInformation("AsyncSpark.Web application starting up...");
+logger.LogInformation("AsyncSpark.Web starting — site will start in degraded mode if any optional services are unavailable");
 
 try
 {
     app.Run();
 }
+catch (OperationCanceledException)
+{
+    // Normal shutdown via Ctrl+C or SIGTERM — not an error
+    logger.LogInformation("AsyncSpark.Web shut down via cancellation");
+}
 catch (Exception ex)
 {
-    logger.LogCritical(ex, "Application terminated unexpectedly");
+    // Only truly fatal host failures reach here (e.g. port conflict, missing cert).
+    // Startup service failures are caught inside StartupHostedService and do not propagate here.
+    logger.LogCritical(ex, "AsyncSpark.Web terminated unexpectedly — this is a host-level failure, not a service failure");
     throw;
 }
 finally
 {
-    logger.LogInformation("AsyncSpark.Web application shut down complete");
+    logger.LogInformation("AsyncSpark.Web shut down complete");
 }
