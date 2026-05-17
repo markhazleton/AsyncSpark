@@ -20,10 +20,13 @@
     <title>@ViewData["Title"] - AsyncSpark.Web</title>
 
     @{
-        var themeName = BootswatchThemeHelper.GetCurrentThemeName(Context);
+        var defaultTheme = ViewContext.HttpContext.RequestServices
+            .GetService<IConfiguration>()?.GetValue<string>("BootswatchOptions:DefaultTheme") ?? "yeti";
+        var themeName = BootswatchThemeHelper.GetCurrentThemeName(Context, defaultTheme);
         var themeUrl = BootswatchThemeHelper.GetThemeUrl(StyleCache, themeName);
     }
-    <link id="bootswatch-theme-stylesheet" rel="stylesheet" href="@themeUrl" />
+    <link id="bootswatch-theme-stylesheet" rel="stylesheet" href="@themeUrl"
+          onerror="this.onerror=null;this.href='/lib/bootstrap/dist/css/bootstrap.min.css';" />
     <script src="/_content/WebSpark.Bootswatch/js/bootswatch-theme-switcher.js"></script>
 
     <!-- Bootstrap Icons -->
