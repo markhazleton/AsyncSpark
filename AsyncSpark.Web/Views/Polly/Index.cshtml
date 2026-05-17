@@ -1,7 +1,9 @@
 ﻿@model AsyncSpark.Models.MockResults
+@using System.Collections.Generic
 @{
     ViewData["Title"] = "Polly Resilience Patterns";
     var bgColorClass = Model?.ResultValue == "-1" ? "bg-danger" : "bg-success";
+    var apiCallLog = ViewData["ApiCallLog"] as List<string>;
 }
 
 <div class="row justify-content-center mb-5">
@@ -150,6 +152,21 @@
                                 </button>
                             </div>
                         </form>
+
+                        @if (apiCallLog != null && apiCallLog.Count > 0)
+                        {
+                            <div class="mt-4">
+                                <h5 class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-terminal me-2 text-primary"></i>API Call Log
+                                </h5>
+                                <div class="bg-dark text-light rounded p-3" style="font-size:0.82rem; font-family: monospace; overflow-x: auto;">
+                                    @foreach (var entry in apiCallLog)
+                                    {
+                                        <div class="mb-1">@Html.Raw(entry)</div>
+                                    }
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

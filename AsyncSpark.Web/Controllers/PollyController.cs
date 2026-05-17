@@ -77,7 +77,8 @@ namespace AsyncSpark.Web.Controllers
             HttpResponseMessage response = new(HttpStatusCode.InternalServerError);
 
             var requestUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/api/remote/Results";
-            mockResults.Message = $"<small class='text-muted'>POST {requestUrl}</small>";
+            var apiCallLog = new List<string>();
+            apiCallLog.Add($"<strong>POST</strong> <code>{requestUrl}</code>");
 
             try
             {
@@ -90,6 +91,8 @@ namespace AsyncSpark.Web.Controllers
                     _logger.LogWarning("[POLLY-DIAG] → POST {Url} | Content-Type: {CT} | Body: {Body}",
                         requestUrl, content.Headers.ContentType, json);
 
+                    apiCallLog.Add($"→ <code>{System.Web.HttpUtility.HtmlEncode(json)}</code>");
+
                     var httpResponse = await _httpClient.PostAsync(requestUrl, content, Cts.Token);
 
                     var responseBody = await httpResponse.Content.ReadAsStringAsync();
@@ -97,11 +100,8 @@ namespace AsyncSpark.Web.Controllers
                         (int)httpResponse.StatusCode, httpResponse.ReasonPhrase,
                         httpResponse.Content.Headers.ContentType, responseBody);
 
-                    // Surface response details in the view regardless of success/failure
-                    if (context.TryGetValue("ResultsList", out var rl) && rl is List<string> diagList)
-                    {
-                        diagList.Add($"<strong>{(int)httpResponse.StatusCode} {httpResponse.ReasonPhrase}</strong> | CT: {httpResponse.Content.Headers.ContentType} | Body: <code>{System.Web.HttpUtility.HtmlEncode(responseBody[..Math.Min(responseBody.Length, 300)])}</code>");
-                    }
+                    var statusClass = httpResponse.IsSuccessStatusCode ? "text-success" : "text-danger";
+                    apiCallLog.Add($"← <span class='{statusClass}'><strong>{(int)httpResponse.StatusCode} {System.Web.HttpUtility.HtmlEncode(httpResponse.ReasonPhrase)}</strong></span> <code>{System.Web.HttpUtility.HtmlEncode(responseBody[..Math.Min(responseBody.Length, 500)])}</code>");
 
                     // Re-wrap so downstream ReadFromJsonAsync still works
                     httpResponse.Content = new StringContent(responseBody,
@@ -145,13 +145,14 @@ namespace AsyncSpark.Web.Controllers
             StopWatch.Stop();
             mockResults.RunTimeMS = StopWatch.ElapsedMilliseconds;
 
-            // Retrieve the list of results and store them in the mockResults message
-            if (context.TryGetValue("ResultsList", out var resultsList) && resultsList is List<string> results)
+            // Append Polly retry events to the message
+            if (context.TryGetValue("ResultsList", out var resultsList) && resultsList is List<string> results && results.Count > 0)
             {
-                mockResults.Message += "<hr/>" + string.Join(";<br/> ", results);
+                mockResults.Message = (mockResults.Message ?? "") + (string.IsNullOrEmpty(mockResults.Message) ? "" : "<hr/>") + string.Join(";<br/>", results);
             }
 
-            // Return the results to the view
+            ViewData["ApiCallLog"] = apiCallLog;
+
             return View("Index", mockResults);
         }
     }
