@@ -92,7 +92,7 @@ Build completed successfully!
   "dependencies": {
     "datatables.net": "^2.3.5",
     "datatables.net-bs5": "^2.3.5",
-    "jquery": "^3.7.1",
+    "jquery": "^4.0.0",
     "jquery-validation": "^1.21.0",
     "jquery-validation-unobtrusive": "^4.0.0",
     "toastr": "^2.1.4"
@@ -156,7 +156,7 @@ For public web apps: **CDN is the better choice** ?
    - ~~Copies Bootstrap Icons fonts~~ (removed)
 
 2. **webpack bundles**:
-   - jQuery (3.7.1)
+   - jQuery (4.0.0)
    - jQuery Validation
    - DataTables.net + Bootstrap 5 integration
    - Toastr notifications
