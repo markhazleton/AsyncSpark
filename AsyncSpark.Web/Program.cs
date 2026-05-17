@@ -68,7 +68,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 });
 
-builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
+builder.Services.AddMvc();
 
 // Register HttpGetCallService with proper DI
 builder.Services.AddScoped<IHttpGetCallService>(serviceProvider =>
@@ -146,17 +146,14 @@ app.UseSession();
 app.MapGet("/", () => Results.Redirect("/Home/Index", permanent: false))
    .ExcludeFromDescription();
 
-// Add MVC routing for convention-based routes (Home, Polly, BulkCalls, OpenWeather)
-app.UseMvc(routes =>
-{
-    routes.MapRoute(
-        name: "default",
-        template: "{controller=Home}/{action=Index}/{id?}");
-});
-
-// Add Scalar API documentation and attribute-routed API controllers after MVC
+// Add Scalar API documentation
 app.UseCustomScalar();
+
+// Map all controllers — attribute-routed API controllers and convention-routed MVC controllers
 app.MapControllers();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapHealthChecks("/health");
 
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
