@@ -18,8 +18,7 @@ public class AsyncMockServiceTests
             cancellationToken);
 
         // Assert
-        Assert.IsNotNull(result);
-        Assert.AreEqual(result, 45);
+        Assert.AreEqual(45, result);
     }
 
     [TestMethod]
@@ -33,8 +32,7 @@ public class AsyncMockServiceTests
         var result = await asyncMock.LongRunningOperation(loop);
 
         // Assert
-        Assert.IsNotNull(result);
-        Assert.AreEqual(result, 45);
+        Assert.AreEqual(45, result);
     }
 
     [TestMethod]
@@ -51,7 +49,6 @@ public class AsyncMockServiceTests
             cancellationToken);
 
         // Assert
-        Assert.IsNotNull(result);
-        Assert.AreEqual(result, 45);
+        Assert.AreEqual(45, result);
     }
 }

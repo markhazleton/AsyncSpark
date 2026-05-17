@@ -8,6 +8,7 @@
     <UserSecretsId>90ba3d65-6f73-4306-99f9-8b3d90cd84c4</UserSecretsId>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DocumentationFile>wwwroot\AsyncSpark.Web.xml</DocumentationFile>
+    <NoWarn>NU1510</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <Deterministic>false</Deterministic>
