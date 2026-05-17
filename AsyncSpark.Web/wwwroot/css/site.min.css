@@ -5,6 +5,19 @@
    NO hardcoded colors - everything uses Bootstrap CSS variables or semantic classes
 */
 
+/* Theme switcher buttons inside dark navbar */
+.navbar-dark .bootswatch-theme-switcher .btn-outline-secondary,
+.bg-dark .bootswatch-theme-switcher .btn-outline-secondary {
+  color: rgba(255, 255, 255, 0.75);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.navbar-dark .bootswatch-theme-switcher .btn-outline-secondary:hover,
+.bg-dark .bootswatch-theme-switcher .btn-outline-secondary:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.75);
+}
+
 /* Fixed Navbar Spacing */
 body {
   padding-top: 70px;
